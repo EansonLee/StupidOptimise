@@ -1,16 +1,20 @@
 plugins {
     id 'com.android.application'
+    id 'kotlin-android'
 }
 
+def androidID = rootProject.ext.androidId
+
 android {
-    compileSdk 34
+    compileSdkVersion androidID.compileSdkVersion
+    buildToolsVersion androidID.buildToolsVersion
 
     defaultConfig {
         applicationId "com.eason.stupidoptimise"
-        minSdk 24
-        targetSdk 34
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion androidID.minSdkVersion
+        targetSdkVersion androidID.targetSdkVersion
+        versionCode androidID.versionCode
+        versionName androidID.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
@@ -37,16 +41,19 @@ android {
         }
     }
     buildFeatures {
-        viewBinding true
+        viewBinding =  true
     }
 }
 
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    dependenciesID.each { k, v -> implementation v }
+
+    //coroutines: 协程
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3"
+    //coroutines for Android
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3'
+    //lifecycle
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
 }
