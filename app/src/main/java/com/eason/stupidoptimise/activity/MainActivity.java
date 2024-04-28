@@ -1,4 +1,4 @@
-package com.eason.stupidoptimise;
+package com.eason.stupidoptimise.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,7 +9,6 @@ import com.eason.stupidoptimise.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Used to load the 'stupidoptimise' library on application startup.
     static {
         System.loadLibrary("stupidoptimise");
     }
@@ -26,9 +25,6 @@ public class MainActivity extends AppCompatActivity {
         tv.setText(stringFromJNI());
     }
 
-    /**
-     * A native method that is implemented by the 'stupidoptimise' native library,
-     * which is packaged with this application.
-     */
+
     public native String stringFromJNI();
 }
