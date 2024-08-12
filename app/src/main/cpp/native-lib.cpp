@@ -2,12 +2,22 @@
 #include "unistd.h"
 #include "sched.h"
 #include "android/log.h"
+#include "art_thread.h"
 #include <string>
+
 
 static jfieldID nativePeerField = NULL;
 
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_eason_stupidoptimise_activity_MainActivity_stringFromJNI(JNIEnv *env, jobject thiz) {
+    std::string hello = "Hello from C++";
+    return env->NewStringUTF(hello.c_str());
+}
 
-extern "C" jint
+
+extern "C"
+JNIEXPORT jint JNICALL
 Java_com_eason_stupidoptimise_cpuboost_NativeThread_getTid(JNIEnv *env, jclass clazz,
                                                            jobject thread) {
     if (nativePeerField == nullptr) {
@@ -15,30 +25,30 @@ Java_com_eason_stupidoptimise_cpuboost_NativeThread_getTid(JNIEnv *env, jclass c
         nativePeerField = env->GetFieldID(threadClass, "nativePeer", "J");
     }
     jlong nativePeerValue = env->GetLongField(thread, nativePeerField);
-    if (nativePeerValue ==
-        0) { //native thread has not yet been created/started, or has been destroyed.
+    if (nativePeerValue == 0){ //native thread has not yet been created/started, or has been destroyed.
         return -1;
     }
     auto *artThread = reinterpret_cast<art::Thread *>(nativePeerValue);
     uint32_t tid = artThread->GetTid();
     //double check, 保证上面计算tid时，线程还未被销毁，避免计算出一个异常的tid
     nativePeerValue = env->GetLongField(thread, nativePeerField);
-    if (nativePeerValue ==
-        0) { //native thread has not yet been created/started, or has been destroyed.
+    if (nativePeerValue == 0){ //native thread has not yet been created/started, or has been destroyed.
         return -1;
     }
     return tid;
 }
 
 
-JNIEXPORT jlong
-extern "C" jlong
-Java_com_eason_stupidoptimise_cpuboost_NativeThread_getCpuMicroTime(JNIEnv *env, jclass clazz,
-                                                                    jlong native_peer) {
-}
+
+//extern "C"
+//JNIEXPORT jlong JNICALL
+//Java_com_eason_stupidoptimise_cpuboost_NativeThread_getCpuMicroTime(JNIEnv *env, jclass clazz, jlong native_peer) {
+//
+//}
 
 
-extern "C" jboolean
+extern "C"
+JNIEXPORT jboolean JNICALL
 Java_com_eason_stupidoptimise_cpuboost_ThreadCpuAffinityManager_setCpuAffinity(JNIEnv *env,
                                                                                jclass clazz,
                                                                                jint tid,
@@ -54,13 +64,13 @@ Java_com_eason_stupidoptimise_cpuboost_ThreadCpuAffinityManager_setCpuAffinity(J
 
     cpu_set_t mask;
     CPU_ZERO(&mask);
-    for (jint cpu: bind_cpus) {
+    for (jint cpu : bind_cpus) {
         if (cpu > 0 && cpu < cpu_count) {
             CPU_SET(cpu, &mask); //设置对应cpu位置的值为1
         } else {
             __android_log_print(ANDROID_LOG_ERROR,
                                 "TCpuAffinity",
-                                "try bind illegal cpu index %d", cpu);
+                                "try bind illegal cpu index %d",cpu);
         }
     }
 
@@ -71,14 +81,15 @@ Java_com_eason_stupidoptimise_cpuboost_ThreadCpuAffinityManager_setCpuAffinity(J
     } else {
         __android_log_print(ANDROID_LOG_ERROR,
                             "TCpuAffinity",
-                            "setCpuAffinity() failed code %d", code);
+                            "setCpuAffinity() failed code %d",code);
         // return failed
         return JNI_FALSE;
     }
 }
 
 
-extern "C" jboolean
+extern "C"
+JNIEXPORT jboolean JNICALL
 Java_com_eason_stupidoptimise_cpuboost_ThreadCpuAffinityManager_resetCpuAffinity(JNIEnv *env,
                                                                                  jclass clazz,
                                                                                  jint tid) {
@@ -103,14 +114,14 @@ Java_com_eason_stupidoptimise_cpuboost_ThreadCpuAffinityManager_resetCpuAffinity
         // log reset thread affinity failed
         return JNI_TRUE;
     } else {
-        __android_log_print(ANDROID_LOG_ERROR, "TCpuAffinity", "resetCpuAffinity() failed code %d",
-                            code);
+        __android_log_print(ANDROID_LOG_ERROR, "TCpuAffinity", "resetCpuAffinity() failed code %d",code);
         return JNI_FALSE;
     }
 }
 
 
-extern "C" jintArray
+extern "C"
+JNIEXPORT jintArray JNICALL
 Java_com_eason_stupidoptimise_cpuboost_ThreadCpuAffinityManager_getCpuAffinity(JNIEnv *env,
                                                                                jclass clazz,
                                                                                jint tid) {
@@ -132,9 +143,4 @@ Java_com_eason_stupidoptimise_cpuboost_ThreadCpuAffinityManager_getCpuAffinity(J
     jintArray result = env->NewIntArray(index);
     env->SetIntArrayRegion(result, 0, index, cpuArr);
     return result;
-}
-
-
-extern "C" jstring
-Java_com_eason_stupidoptimise_activity_MainActivity_stringFromJNI(JNIEnv *env, jobject thiz) {
 }

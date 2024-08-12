@@ -6,7 +6,7 @@ public class NativeThread {
 
     public static native int getTid(Thread thread);
 
-    public static native long getCpuMicroTime(long nativePeer);
+//    public static native long getCpuMicroTime(long nativePeer);
 
     public static long getNativePeer(Thread thread){
         try {
