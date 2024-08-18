@@ -43,9 +43,11 @@ android {
     }
     buildFeatures {
         viewBinding =  true
+        prefab true
     }
 
     packagingOptions {
+        pickFirst '**/libxdl.so'
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/LICENSE'
@@ -67,4 +69,5 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3'
     //lifecycle
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
+    implementation 'io.github.hexhacking:xdl:2.2.0'
 }
