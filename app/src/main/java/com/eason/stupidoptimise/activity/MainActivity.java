@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.eason.stupidoptimise.cpuboost.CpuBoostUtil;
 import com.eason.stupidoptimise.cpuboost.NativeThread;
 import com.eason.stupidoptimise.cpuboost.ThreadCpuAffinityManager;
 import com.eason.stupidoptimise.databinding.ActivityMainBinding;
@@ -63,10 +64,11 @@ public class MainActivity extends AppCompatActivity {
         binding.tvSetBigAffinity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int tid = NativeThread.getTid(Looper.getMainLooper().getThread());
-                Log.e("cpuBind", "主线程tid：" + tid + "，pid：" + Process.myPid());
-                boolean result = ThreadCpuAffinityManager.setCpuAffinityToBigAndPlusCore(tid);
-                Log.e("cpuBind", "绑定大核：" + result);
+//                int tid = NativeThread.getTid(Looper.getMainLooper().getThread());
+//                Log.e("cpuBind", "主线程tid：" + tid + "，pid：" + Process.myPid());
+//                boolean result = ThreadCpuAffinityManager.setCpuAffinityToBigAndPlusCore(tid);
+//                Log.e("cpuBind", "绑定大核：" + result);
+                CpuBoostUtil.boostCpuBindBigCore();
             }
         });
     }
