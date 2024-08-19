@@ -3,6 +3,7 @@
 #include "sched.h"
 #include "android/log.h"
 #include "art_thread.h"
+#include "cpu_info.h"
 #include <string>
 
 
@@ -143,4 +144,32 @@ Java_com_eason_stupidoptimise_cpuboost_ThreadCpuAffinityManager_getCpuAffinity(J
     jintArray result = env->NewIntArray(index);
     env->SetIntArrayRegion(result, 0, index, cpuArr);
     return result;
+}
+
+
+extern "C"
+JNIEXPORT jboolean JNICALL
+Java_com_eason_stupidoptimise_cpuboost_ThreadCpuAffinityManager_setCpuAffinityToBigAndPlusCore(
+        JNIEnv *env, jclass clazz, jint tid) {
+    if (tid <= 0) {
+        tid = gettid();
+    }
+
+    cpu_set_t mask;
+    CPU_ZERO(&mask);
+
+    jint max_cpu_num = getMaxFreqCPU();
+    CPU_SET(max_cpu_num, &mask);
+    int code = sched_setaffinity(tid, sizeof(mask), &mask);
+    if (code == 0) {
+        // return success
+        return JNI_TRUE;
+    } else {
+        __android_log_print(ANDROID_LOG_ERROR,
+                            "TCpuAffinity",
+                            "setCpuAffinity() failed code %d",code);
+        // return failed
+        return JNI_FALSE;
+    }
+
 }

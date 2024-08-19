@@ -9,15 +9,19 @@
 
     <Button
         android:id="@+id/tv_get_tid"
-        android:text="获取tid"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="获取tid，并设置亲和性" />
+
     <Button
-        android:text="获取亲和性"
         android:id="@+id/tv_get_affinity"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="获取亲和性" />
 
-
-
+    <Button
+        android:id="@+id/tv_set_big_affinity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="绑定大核" />
 </LinearLayout>

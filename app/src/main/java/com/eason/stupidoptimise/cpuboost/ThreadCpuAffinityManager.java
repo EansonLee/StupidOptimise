@@ -13,9 +13,11 @@ public class ThreadCpuAffinityManager {
 
     public static native int[] getCpuAffinity(int tid);
 
+    public static native boolean setCpuAffinityToBigAndPlusCore(int tid);
+
     public static boolean setCpuAffinityToThread(Thread thread,int[] cpuSet){
         int tid = NativeThread.getTid(thread);
-        return setCpuAffinity(tid,cpuSet);
+        return setCpuAffinity(tid, cpuSet);
     }
 
     public  static boolean resetCpuAffinity(Thread thread){

@@ -36,6 +36,8 @@ add_library(${CMAKE_PROJECT_NAME} SHARED
         art_thread.h
         common.h
         tls.h
+        cpu_info.h
+        cpu_info.cpp
         art_thread.cpp)
 
 # Specifies libraries CMake should link to your target library. You

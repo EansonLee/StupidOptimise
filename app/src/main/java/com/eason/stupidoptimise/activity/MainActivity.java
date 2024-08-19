@@ -60,10 +60,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        binding.tvSetBigAffinity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int tid = NativeThread.getTid(Looper.getMainLooper().getThread());
+                Log.e("cpuBind", "主线程tid：" + tid + "，pid：" + Process.myPid());
+                boolean result = ThreadCpuAffinityManager.setCpuAffinityToBigAndPlusCore(tid);
+                Log.e("cpuBind", "绑定大核：" + result);
+            }
+        });
     }
 
 
     public native String stringFromJNI();
 
-    public native int sasd();
 }
