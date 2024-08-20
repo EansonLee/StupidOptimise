@@ -1,6 +1,7 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
+    id 'maven-publish'
 }
 
 def androidID = rootProject.ext.androidId
@@ -70,4 +71,17 @@ dependencies {
     //lifecycle
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
     implementation 'io.github.hexhacking:xdl:2.2.0'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.easonlee'
+                artifactId = 'stupid-optimise'
+                version = '1.0'
+            }
+        }
+    }
 }
