@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 //                Log.e("cpuBind", "主线程tid：" + tid + "，pid：" + Process.myPid());
 //                boolean result = ThreadCpuAffinityManager.setCpuAffinityToBigAndPlusCore(tid);
 //                Log.e("cpuBind", "绑定大核：" + result);
-                CpuBoostUtil.boostCpuBindBigCore();
+//                CpuBoostUtil.boostCpuBindBigCore();
             }
         });
     }
