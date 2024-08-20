@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ccbbdd"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_android_debug_fix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="android 14 debug fix" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_DisableClassVerify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="禁用 classVerify" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_print_cpu_freq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="开始打印CPU频率" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_test_getThreadCpuTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="获取线程cpuTime测试" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_cpuBoost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="cpu调频优化测试" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_threadPriorityTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="线程优先级测试" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/bind_cpu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="200dp"
+        android:autofillHints="目标cpu，以 分割"
+        android:hint="目标cpu，以 分割"
+        android:text="7" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_cpuBindCore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="线程Cpu亲和性变更" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_getMainThreadAffinity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="主线程CPU亲和性" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/jdwpTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="jdwp测试" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

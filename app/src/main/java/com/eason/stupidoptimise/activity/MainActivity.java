@@ -1,26 +1,20 @@
 package com.eason.stupidoptimise.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LifecycleCoroutineScope;
-
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.Process;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.eason.stupidoptimise.cpuboost.CpuBoostUtil;
 import com.eason.stupidoptimise.cpuboost.NativeThread;
 import com.eason.stupidoptimise.cpuboost.ThreadCpuAffinityManager;
 import com.eason.stupidoptimise.databinding.ActivityMainBinding;
+import com.eason.stupidoptimise.util.ThreadUtil;
 
 import java.util.Arrays;
-
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.jvm.functions.Function2;
-import kotlinx.coroutines.CoroutineScope;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,14 +33,16 @@ public class MainActivity extends AppCompatActivity {
         binding.tvGetTid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int tid = NativeThread.getTid(Looper.getMainLooper().getThread());
-                Log.e("cpuBind", "主线程tid：" + tid + "，pid：" + Process.myPid());
-                int[] affinity = ThreadCpuAffinityManager.getCpuAffinity(tid);
-                Log.e("cpuBind", "主线程亲和性：" + tid + "，affinity：" + Arrays.toString(affinity));
-
-                int[] newAffinity = new int[]{2};
-                ThreadCpuAffinityManager.setCpuAffinityToThread(Looper.getMainLooper().getThread(), newAffinity);
-
+//                int tid = NativeThread.getTid(Looper.getMainLooper().getThread());
+//                Log.e("cpuBind", "主线程tid：" + tid + "，pid：" + Process.myPid());
+//                int[] affinity = ThreadCpuAffinityManager.getCpuAffinity(tid);
+//                int core = ThreadUtil.INSTANCE.getLastRunOnCpu(tid);
+//
+//                Log.e("cpuBind", "主线程亲和性：" + tid + "，affinity：" + Arrays.toString(affinity) + "，运行在：" + core);
+//
+//                int[] newAffinity = new int[]{6};
+//                ThreadCpuAffinityManager.setCpuAffinityToThread(Looper.getMainLooper().getThread(), newAffinity);
+                bindMainAffinityTest();
             }
         });
 
@@ -58,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("cpuBind", "主线程tid：" + tid + "，pid：" + Process.myPid());
                 int[] affinity = ThreadCpuAffinityManager.getCpuAffinity(tid);
                 Log.e("cpuBind", "主线程亲和性：" + tid + "，affinity：" + Arrays.toString(affinity));
+                int core = ThreadUtil.INSTANCE.getLastRunOnCpu(tid);
+                Log.e("cpuBind", "主线程亲和性：" + tid + "，affinity：" + Arrays.toString(affinity) + "，运行在：" + core);
+
             }
         });
 
@@ -73,6 +72,41 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    private void bindMainAffinityTest() {
+        int tid = NativeThread.getTid(Looper.getMainLooper().getThread());
+        Log.e("cpuBind", "主线程tid：" + tid);
+        int core = ThreadUtil.INSTANCE.getLastRunOnCpu(tid);
+        int[] affinity = ThreadCpuAffinityManager.getCpuAffinity(tid);
+        Log.e("cpuBind", "主线程亲和性：" + tid + "，affinity：" + Arrays.toString(affinity) + "，运行在：" + core);
+        for (int i = 0; i < 5; i++) {
+            try {
+                Thread.sleep(200);
+                core = ThreadUtil.INSTANCE.getLastRunOnCpu(tid);
+                Log.e("cpuBind", "运行在：" + core);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        int[] newAffinity = new int[]{6,5};
+        boolean res = ThreadCpuAffinityManager.setCpuAffinityToThread(Looper.getMainLooper().getThread(), newAffinity);
+        Log.e("cpuBind", "尝试修改亲和性为：" + Arrays.toString(newAffinity) + "，修改结果：" + res);
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        for (int i = 0; i < 5; i++) {
+            try {
+                Thread.sleep(200);
+                core = ThreadUtil.INSTANCE.getLastRunOnCpu(tid);
+                Log.e("cpuBind", "运行在CPU：" + core);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
     public native String stringFromJNI();
 
