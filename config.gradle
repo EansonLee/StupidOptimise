@@ -79,7 +79,7 @@ ext {
             "glide-transformations"   : "jp.wasabeef:glide-transformations:4.3.0",
 
             "youthbanner"             : "io.github.youth5201314:banner:2.2.2",
-            "utilcode"                : "com.blankj:utilcodex:1.29.0",
+//            "utilcode"                : "com.blankj:utilcodex:1.29.0",
             "mmkv"                    : "com.tencent:mmkv:1.2.9",
     ]
 }
