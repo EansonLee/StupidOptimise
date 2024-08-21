@@ -39,7 +39,7 @@ android {
     externalNativeBuild {
         cmake {
             path file('src/main/cpp/CMakeLists.txt')
-            version '3.22.1'
+            version '3.10.2'
         }
     }
     buildFeatures {
@@ -79,8 +79,8 @@ afterEvaluate {
             release(MavenPublication) {
                 from components.release
                 groupId = 'com.github.EansonLee'
-                artifactId = 'stupid-optimise'
-                version = '1.0.1'
+                artifactId = 'StupidOptimise'
+                version = '1.0.2'
             }
         }
     }
