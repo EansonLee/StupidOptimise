@@ -11,7 +11,7 @@ android {
     buildToolsVersion androidID.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.eason.stupidoptimise"
+//        applicationId "com.eason.stupidoptimise"
         minSdkVersion androidID.minSdkVersion
         targetSdkVersion androidID.targetSdkVersion
         versionCode androidID.versionCode
@@ -78,7 +78,7 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.release
-                groupId = 'com.github.easonlee'
+                groupId = 'com.github.EansonLee'
                 artifactId = 'stupid-optimise'
                 version = '1.0'
             }
