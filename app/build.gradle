@@ -48,6 +48,7 @@ android {
 
     packagingOptions {
         pickFirst '**/libxdl.so'
+        pickFirst '**/libbytehook.so'
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/LICENSE'
@@ -70,4 +71,5 @@ dependencies {
     //lifecycle
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
     implementation 'io.github.hexhacking:xdl:2.2.0'
+    implementation 'com.bytedance:bytehook:1.0.10'
 }
