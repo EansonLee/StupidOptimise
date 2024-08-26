@@ -5,7 +5,7 @@
 #include <unistd.h>
 
 #define HOOKEE_JNI_VERSION    JNI_VERSION_1_6
-#define HOOKEE_JNI_CLASS_NAME "com/eason/hook/NativeHookee"
+#define HOOKEE_JNI_CLASS_NAME "com/eason/stupidoptimise/hook/NativeHookee"
 #define HOOKEE_TAG            "bytehook_tag"
 
 #pragma clang diagnostic push

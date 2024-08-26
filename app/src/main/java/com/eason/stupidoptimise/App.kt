@@ -11,6 +11,8 @@ class App : MultiDexApplication() {
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         System.loadLibrary("stupidoptimise")
+        System.loadLibrary("hacker")
+        System.loadLibrary("hookee")
 
         val r = ByteHook.init(
             ByteHook.ConfigBuilder()

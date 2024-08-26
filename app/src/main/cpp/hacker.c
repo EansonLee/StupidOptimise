@@ -12,7 +12,7 @@
 #include "bytehook.h"
 
 #define HACKER_JNI_VERSION    JNI_VERSION_1_6
-#define HACKER_JNI_CLASS_NAME "com/eason/hook/NativeHacker"
+#define HACKER_JNI_CLASS_NAME "com/eason/stupidoptimise/hook/NativeHacker"
 #define HACKER_TAG            "bytehook_tag"
 
 #pragma clang diagnostic push
@@ -118,7 +118,7 @@ static bool allow_filter_for_hook_all(const char *caller_path_name, void *arg) {
 
     return true;
 }
-
+//todo 判断是否有此方法
 static int hacker_hook(JNIEnv *env, jobject thiz, jint type) {
     (void)env, (void)thiz;
 
