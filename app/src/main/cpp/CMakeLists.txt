@@ -15,9 +15,7 @@ add_library(${CMAKE_PROJECT_NAME} SHARED
         tls.h
         cpu_info.h
         cpu_info.cpp
-        art_thread.cpp
-        hacker.cpp
-        hookee.cpp)
+        art_thread.cpp)
 
 
 target_link_libraries(${CMAKE_PROJECT_NAME}
@@ -25,3 +23,15 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
         log
         xdl::xdl
         bytehook::bytehook)
+
+# libhacker.so
+add_library(hacker SHARED hacker.c)
+target_compile_features(hacker PUBLIC c_std_17)
+target_compile_options(hacker PUBLIC -std=c17 -Weverything -Werror)
+target_link_libraries(hacker bytehook::bytehook log)
+
+# libhookee.so
+add_library(hookee SHARED hookee.c)
+target_compile_features(hookee PUBLIC c_std_17)
+target_compile_options(hookee PUBLIC -std=c17 -Weverything -Werror)
+target_link_libraries(hookee log)
