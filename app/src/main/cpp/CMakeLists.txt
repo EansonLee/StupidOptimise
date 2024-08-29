@@ -27,7 +27,7 @@ set(CMAKE_CXX_STANDARD 17)
 # for GameActivity/NativeActivity derived applications, the same library name must be
 # used in the AndroidManifest.xml file.
 
-find_package(xdl REQUIRED CONFIG)
+#find_package(xdl REQUIRED CONFIG)
 
 add_library(${CMAKE_PROJECT_NAME} SHARED
         # List C/C++ source files with relative paths to this CMakeLists.txt.
@@ -47,4 +47,5 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
         # List libraries link to the target library
         android
         log
-        xdl::xdl)
+#        xdl::xdl
+        )
