@@ -70,7 +70,7 @@ ext {
             okhttpLoggingInterceptor  : 'com.squareup.okhttp3:logging-interceptor:3.12.0',
             // 解析工具
             gson                      : "com.google.code.gson:gson:2.6.2",
-            "chatgpt"                 : "com.unfbx:chatgpt-java:1.0.10",
+//            "chatgpt"                 : "com.unfbx:chatgpt-java:1.0.10",
 
             "lottie"                  : "com.airbnb.android:lottie:3.6.1",
 
