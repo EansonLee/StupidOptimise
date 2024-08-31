@@ -3,6 +3,7 @@ package com.eason.stupidoptimise.activity;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.Process;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 
@@ -84,8 +85,9 @@ public class MainActivity extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
         }
+        testLocal();
 
-        int[] newAffinity = new int[]{6,5};
+        int[] newAffinity = new int[]{6, 7};
         boolean res = ThreadCpuAffinityManager.setCpuAffinityToThread(Looper.getMainLooper().getThread(), newAffinity);
         Log.e("cpuBind", "尝试修改亲和性为：" + Arrays.toString(newAffinity) + "，修改结果：" + res);
         try {
@@ -102,6 +104,19 @@ public class MainActivity extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
         }
+        testLocal();
+    }
+
+    private void testLocal() {
+        long beginTime = SystemClock.elapsedRealtimeNanos();
+        long cpuBeginTime = SystemClock.currentThreadTimeMillis();
+        int res = 1;
+        for (int i = 0; i < 99999999; i++) {
+            res += i;
+        }
+        long iEndTime = SystemClock.elapsedRealtimeNanos();
+        long iCpuEndTime = SystemClock.currentThreadTimeMillis();
+        Log.e("cpuBind", "cost wallTime：" + ((iEndTime - beginTime)/ 1000) + "，cpu Time：" + (iCpuEndTime - cpuBeginTime));
     }
 
     public native String stringFromJNI();
