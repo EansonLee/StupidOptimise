@@ -9,6 +9,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.eason.hooklib.NativeLib;
 import com.eason.stupidoptimise.cpuboost.CpuBoostUtil;
 import com.eason.stupidoptimise.cpuboost.NativeThread;
 import com.eason.stupidoptimise.cpuboost.ThreadCpuAffinityManager;
@@ -67,6 +68,22 @@ public class MainActivity extends AppCompatActivity {
                 CpuBoostUtil.boostCpuBindBigCore();
             }
         });
+
+        binding.tvHookLib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean res = NativeLib.Companion.hookConcurrentGCTask();
+                Log.e("hook-java", "result：" + res);
+            }
+        });
+
+        binding.tvGc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                allocateMemory();
+                System.gc();
+            }
+        });
     }
 
 
@@ -116,7 +133,29 @@ public class MainActivity extends AppCompatActivity {
         }
         long iEndTime = SystemClock.elapsedRealtimeNanos();
         long iCpuEndTime = SystemClock.currentThreadTimeMillis();
-        Log.e("cpuBind", "cost wallTime：" + ((iEndTime - beginTime)/ 1000) + "，cpu Time：" + (iCpuEndTime - cpuBeginTime));
+        Log.e("cpuBind", "cost wallTime：" + ((iEndTime - beginTime) / 1000) + "，cpu Time：" + (iCpuEndTime - cpuBeginTime));
+    }
+
+
+    public void allocateMemory() {
+
+        int SIZE = 1024 * 1024 * 50; // 50 MB
+
+        try {
+            // 创建一个大数组以占用内存
+            byte[] memoryHog = new byte[SIZE];
+
+            // Optional: 对数组进行操作，防止被编译器优化
+            for (int i = 0; i < memoryHog.length; i++) {
+                memoryHog[i] = (byte) i;
+            }
+
+            // 保留引用，防止垃圾收集器过早回收
+            System.out.println("Allocated 50 MB of memory.");
+        } catch (OutOfMemoryError e) {
+            System.err.println("Out of memory!");
+        }
+
     }
 
     public native String stringFromJNI();

@@ -30,4 +30,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="hook_native" />
+
+    <Button
+        android:id="@+id/tv_gc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tv_gc" />
 </LinearLayout>
