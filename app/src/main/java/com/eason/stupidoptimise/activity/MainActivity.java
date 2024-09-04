@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         }
         long iEndTime = SystemClock.elapsedRealtimeNanos();
         long iCpuEndTime = SystemClock.currentThreadTimeMillis();
-        Log.e("cpuBind", "cost wallTime：" + ((iEndTime - beginTime) / 1000) + "，cpu Time：" + (iCpuEndTime - cpuBeginTime));
+        Log.e("cpuBind", "cost wallTime：" + ((iEndTime - beginTime) / 1_000_000) + "，cpu Time：" + (iCpuEndTime - cpuBeginTime));
     }
 
 

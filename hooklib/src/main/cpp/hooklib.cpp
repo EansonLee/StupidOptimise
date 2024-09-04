@@ -11,6 +11,7 @@
 #include <string.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include <sys/system_properties.h>
 
 
 #define HACKER_TAG "bytehook_tag"
@@ -118,7 +119,9 @@ bool jitDelay() {
         LOG("hook JitCompileTask success");
         return JNI_TRUE;
     } else {
-        LOG("hook JitCompileTask failed");
+        int err_num = shadowhook_get_errno();
+        const char *err_msg = shadowhook_to_errmsg(err_num);
+        LOG("hook JitCompileTask failed hook error %d - %s", err_num, err_msg);
         return JNI_FALSE;
     }
 }
@@ -132,7 +135,9 @@ void gcDelay5X() {
     if (gcStub != nullptr) {
         LOG("hook ConcurrentGC success");
     } else {
-        LOG("hook ConcurrentGC failed");
+        int err_num = shadowhook_get_errno();
+        const char *err_msg = shadowhook_to_errmsg(err_num);
+        LOG("hook ConcurrentGC failed hook error %d - %s", err_num, err_msg);
     }
 }
 
@@ -145,13 +150,69 @@ void gcDelay() {
     if (gcStub != nullptr) {
         LOG("hook ConcurrentGCTask success");
     } else {
-        LOG("hook ConcurrentGCTask failed");
+        int err_num = shadowhook_get_errno();
+        const char *err_msg = shadowhook_to_errmsg(err_num);
+        LOG("hook ConcurrentGCTask failed hook error %d - %s", err_num, err_msg);
     }
+}
+
+/**
+ * 获取手机型号
+ * @return
+ */
+static bool checkIsSpecHonor() {
+    const char honor[] = "honor";
+    size_t len = strlen(honor);
+
+    char brand[PROP_NAME_MAX];
+    __system_property_get("ro.product.brand", brand);
+    LOG("ro.product.brand %s", brand);
+
+    __system_property_get("ro.hardware", brand);
+    LOG("ro.hardware %s", brand);
+
+    __system_property_get("ro.build.id", brand);
+    LOG("ro.build.id %s", brand);
+
+    __system_property_get("ro.build.display.id", brand);
+    LOG("ro.build.display.id %s", brand);
+
+    __system_property_get("ro.product.name", brand);
+    LOG("ro.product.name %s", brand);
+
+    __system_property_get("ro.product.device", brand);
+    LOG("ro.product.device %s", brand);
+
+    __system_property_get("ro.product.board", brand);
+    LOG("ro.product.board %s", brand);
+
+    __system_property_get("ro.build.version.release_or_codename", brand);
+    LOG("ro.build.version.release_or_codename %s", brand);
+
+    __system_property_get("ro.build.version.release", brand);
+    LOG("ro.build.version.release %s", brand);
+
+    __system_property_get("ro.build.type", brand);
+    LOG("ro.build.type %s", brand);
+
+    __system_property_get("ro.build.tags", brand);
+    LOG("ro.build.tags %s", brand);
+
+    if (strncasecmp(honor, brand, len) == 0) {
+        return true;
+    }
+    __system_property_get("ro.product.manufacturer", brand);
+    LOG("ro.product.manufacturer %s", brand);
+    if (strncasecmp(honor, brand, len) == 0) {
+        return true;
+    }
+    return false;
 }
 
 extern "C"
 JNIEXPORT jboolean JNICALL
 Java_com_eason_hooklib_NativeLib_00024Companion_hookConcurrentGCTask(JNIEnv *env, jobject thiz) {
+    checkIsSpecHonor();
     int androidApi = android_get_device_api_level();
     if (androidApi < __ANDROID_API_M__) { // Android 5.x 版本
         gcDelay5X();

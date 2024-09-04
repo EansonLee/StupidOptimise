@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.multidex.MultiDexApplication
 import com.bytedance.android.bytehook.ByteHook
+import com.eason.hooklib.manager.GcManager
 
 class App : MultiDexApplication() {
 
@@ -22,5 +23,7 @@ class App : MultiDexApplication() {
                 .build()
         )
         Log.i(TAG, "bytehook init, return: $r")
+
+        GcManager.init()
     }
 }
