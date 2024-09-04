@@ -33,7 +33,7 @@ android {
     externalNativeBuild {
         cmake {
             path "CMakeLists.txt"
-            version "3.10.2"
+            version "3.22.1"
         }
     }
     buildFeatures {
@@ -50,6 +50,7 @@ android {
 
     packagingOptions {
         exclude '**/libbytehook.so'
+        exclude '**/libshadowhook.so'
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/LICENSE'
@@ -69,4 +70,5 @@ dependencies {
 //    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
 //    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     api 'com.bytedance:bytehook:1.0.10'
+    api 'com.bytedance.android:shadowhook:1.0.10'
 }
